@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Covenant — Lock In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles1.css">
+  <script src="script.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="ptcl"></div>
+
+  <!-- HOME -->
+  <div class="panel active" id="p-home">
+    <div class="page">
+      <div class="home-hdr">
+        <div class="glbl">Good day,</div>
+        <div class="gname">Covenant.</div>
+        <div class="gdate" id="homeDate"></div>
+      </div>
+      <div class="goals-wrap">
+        <div class="glbl2">My Vision</div>
+        <div class="gline"><div class="gdot"></div><div class="gtxt">I own my 1st house before May 17, 2028</div></div>
+        <div class="gline"><div class="gdot"></div><div class="gtxt">I am making a minimum of $1k/month</div></div>
+        <div class="gline"><div class="gdot"></div><div class="gtxt">I have 5 successful businesses before May 17, 2028</div></div>
+      </div>
+      <div class="metrics">
+        <div class="mc"><div class="ml">🔥 Streak</div><div class="mv" id="streakV">0<span> days</span></div><div class="ms">Keep going</div></div>
+        <div class="mc"><div class="ml">⚡ Today</div><div class="mv" id="scoreV">0<span>%</span></div><div class="ms">Daily score</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-top"><div class="prog-lbl">Today's Progress</div><div class="prog-pct" id="dpPct">0%</div></div>
+        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      </div>
+      <div id="compBanner" class="cbanner"><span class="crown">👑</span><div class="ct">Day Complete</div><div class="cs">Covenant locked in — another day closer</div></div>
+      <div class="slbl">Today's Blocks</div>
+      <div id="blocksWrap"></div>
+      <div class="win-card"><div class="wlbl">Today's Biggest Win</div><textarea class="win-in" id="winIn" rows="2" placeholder="What did you build today..."></textarea></div>
+      <div class="qcard"><span class="qmark">"</span><div class="qbody" id="qBody"></div><div class="qauth" id="qAuth"></div></div>
+      <button class="resetbtn" onclick="resetDay()">↺ Reset Today</button>
+    </div>
+  </div>
+
+  <!-- GOALS -->
+  <div class="panel" id="p-goals">
+    <div class="page">
+      <div class="rwh"><div class="rwtitle">Write<br>Your Goals.</div><div class="rwsub">Morning & Night — Every Single Day</div></div>
+      <div class="stabs"><button class="stab on" id="tabM" onclick="switchSess('morning')">🌅 Morning</button><button class="stab" id="tabN" onclick="switchSess('night')">🌙 Night</button></div>
+      <div class="slbl" id="sessLbl">Morning Session</div>
+      <div class="rwcard"><div class="rwnum">Goal 01</div><div class="rwref">I own my 1st house before May 17, 2028</div><textarea class="rwta" id="rw1" rows="2" placeholder="Write it fresh..."></textarea></div>
+      <div class="rwcard"><div class="rwnum">Goal 02</div><div class="rwref">I am making a minimum of $1k/month</div><textarea class="rwta" id="rw2" rows="2" placeholder="Write it fresh..."></textarea></div>
+      <div class="rwcard"><div class="rwnum">Goal 03</div><div class="rwref">I have 5 successful businesses before May 17, 2028</div><textarea class="rwta" id="rw3" rows="2" placeholder="Write it fresh..."></textarea></div>
+      <button class="savebtn" id="saveBtn" onclick="saveRw()">Save This Session →</button>
+      <div class="rwhistory" id="rwHist"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="panel" id="p-stats">
+    <div class="page">
+      <div class="stath"><div class="stattitle">Your<br>Discipline.</div></div>
+      <div class="weakcard"><div class="wklbl">⚠ Needs Attention</div><div class="wkname" id="wkName">Complete blocks to see insights</div><div class="wksub" id="wkSub">Your weakest block appears here</div></div>
+      <div class="weekcard"><div class="clbl">This Week</div><div class="weekrow" id="weekRow"></div></div>
+      <div class="perfcard" style="margin-top:16px"><div class="clbl">Block Performance</div><div id="blockPerf"></div></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="panel" id="p-cal">
+    <div class="page">
+      <div class="calh"><div class="caltitle">Your<br>Consistency.</div></div>
+      <div class="calnav"><button class="calarr" onclick="changeMonth(-1)">‹</button><div class="calmonth" id="calMonth"></div><button class="calarr" onclick="changeMonth(1)">›</button></div>
+      <div class="calgrid">
+        <div class="calwds"><div class="calwd">SUN</div><div class="calwd">MON</div><div class="calwd">TUE</div><div class="calwd">WED</div><div class="calwd">THU</div><div class="calwd">FRI</div><div class="calwd">SAT</div></div>
+        <div class="caldays" id="calDays"></div>
+      </div>
+      <div class="callegend"><div class="legitem"><div class="legdot c"></div>Complete</div><div class="legitem"><div class="legdot p"></div>Partial</div><div class="legitem"><div class="legdot t"></div>Today</div></div>
+      <div class="calstats">
+        <div class="cstat"><div class="csval" id="calFull">0</div><div class="cslbl">Full Days</div></div>
+        <div class="cstat"><div class="csval" id="calStreak">0</div><div class="cslbl">Streak</div></div>
+        <div class="cstat"><div class="csval" id="calAvg">0%</div><div class="cslbl">Avg Score</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nb on" id="nav-home" onclick="go('home')"><div class="ni">⚡</div><div class="nl">Today</div></button>
+    <button class="nb" id="nav-goals" onclick="go('goals')"><div class="ni">✍️</div><div class="nl">Goals</div></button>
+    <button class="nb" id="nav-stats" onclick="go('stats')"><div class="ni">📊</div><div class="nl">Stats</div></button>
+    <button class="nb" id="nav-cal" onclick="go('cal')"><div class="ni">📅</div><div class="nl">Calendar</div></button>
+  </nav>
+</body>
+</html>
